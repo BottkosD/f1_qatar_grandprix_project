@@ -1,0 +1,21 @@
+{
+  "race_details": {
+    "year"      : 2023,
+    "grandprix" : "Qatar",
+    "identifier": "R"
+  },
+  "observed_data" : ["Driver",
+                    "LapNumber",
+                     "LapTime",
+                     "Compound",
+                     "Stint",
+                     "TyreLife",
+                     "TrackStatus",
+                     "PitOutTime",
+                     "PitInTime",
+                     "TrackStatus",
+                     "IsAccurate",
+                     "FastF1Generated"
+                     ],
+  "picked_drivers": ["VER", "PIA", "NOR"]
+}

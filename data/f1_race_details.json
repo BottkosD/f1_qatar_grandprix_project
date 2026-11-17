@@ -11,11 +11,11 @@
                      "Stint",
                      "TyreLife",
                      "TrackStatus",
-                     "PitOutTime",
-                     "PitInTime",
                      "TrackStatus",
                      "IsAccurate",
-                     "FastF1Generated"
+                     "FastF1Generated",
+                     "PitOutTime",
+                     "PitInTime"
                      ],
   "picked_drivers": ["VER", "PIA", "NOR"]
 }

@@ -77,49 +77,102 @@
 #    run_test()
 
 
+#import pandas as pd
+#from data_management.data import load_f1_data
+#from data_management.data_cleaner import cleaned_laps_data
+#from data_management.tdegradation_data import calculate_degradation
+#
+#
+#def run_degradation_test():
+#    print(">>> 1. Adatok betöltése folyamatban (load_f1_data)...")
+#    # A te data.py-od a laps dataframe-et és az oszlopok LISTÁJÁT adja vissza
+#    laps, observed_cols = load_f1_data()
+#
+#    print("\n>>> 2. Adatok tisztítása (cleaned_laps_data)...")
+#    # Itt most közvetlenül a listát adjuk át
+#    cleaned_df = cleaned_laps_data(laps, observed_cols)
+#
+#    print("\n>>> 3. Gumikopás számítása (calculate_degradation)...")
+#    # Mivel a te data.py fájlod (jogosan, hogy ne bonyolítsuk) nem olvassa ki
+#    # és adja vissza a pilótákat a JSON-ből, a teszthez itt megadjuk őket:
+#    picked_drivers = ["VER", "PIA", "NOR"]
+#
+#    plot_data, stats_data = calculate_degradation(cleaned_df, picked_drivers)
+#
+#    print("\n" + "=" * 50)
+#    print(" TESZT SIKERESEN LEFUTOTT ")
+#    print("=" * 50)
+#
+#    print("\n--- STATISZTIKAI ADATOK (stats_data) ---")
+#    print("Ezt használjuk a kopás mértékének elemzésére (meredekség):")
+#    if not stats_data.empty:
+#        display_stats = stats_data.copy()
+#        display_stats['Slope_steepness'] = display_stats['Slope_steepness'].round(4)
+#        print(display_stats.to_string(index=False))
+#    else:
+#        print("Nincs elég adat a statisztika kiszámításához.")
+#
+#    print("\n--- VIZUALIZÁCIÓS ADATOK (plot_data) ---")
+#    print("Az első 15 sor a tiszta (outlier-mentes) adatokból a grafikonhoz:")
+#    if not plot_data.empty:
+#        cols_to_print = ['Driver', 'Compound', 'Stint', 'TyreLife', 'LapTime_in_sec']
+#        print(plot_data[cols_to_print].head(15).to_string(index=False))
+#    else:
+#        print("Nincs elég megtisztított adat a vizualizációhoz.")
+#
+#
+#
+#if __name__ == "__main__":
+#    run_degradation_test()
+
+
 import pandas as pd
 from data_management.data import load_f1_data
-from data_management.data_cleaner import cleaned_laps_data
-from data_management.tdegradation_data import calculate_degradation
+# Feltételezem, hogy a fájlod neve strategy_data.py
+from data_management.strategy_data import get_strategy_data
 
 
-def run_degradation_test():
-    print(">>> 1. Adatok betöltése folyamatban (load_f1_data)...")
-    # A te data.py-od a laps dataframe-et és az oszlopok LISTÁJÁT adja vissza
+def run_strategy_test():
+    print(">>> 1. Nyers adatok betöltése folyamatban (load_f1_data)...")
     laps, observed_cols = load_f1_data()
 
-    print("\n>>> 2. Adatok tisztítása (cleaned_laps_data)...")
-    # Itt most közvetlenül a listát adjuk át
-    cleaned_df = cleaned_laps_data(laps, observed_cols)
-
-    print("\n>>> 3. Gumikopás számítása (calculate_degradation)...")
-    # Mivel a te data.py fájlod (jogosan, hogy ne bonyolítsuk) nem olvassa ki
-    # és adja vissza a pilótákat a JSON-ből, a teszthez itt megadjuk őket:
+    print("\n>>> 2. Stratégiai adatok kinyerése (get_strategy_data)...")
+    # Ugyanazokat a pilótákat nézzük, mint a múltkor
     picked_drivers = ["VER", "PIA", "NOR"]
 
-    plot_data, stats_data = calculate_degradation(cleaned_df, picked_drivers)
+    # A NYERS laps adatokat küldjük be a stratégiához!
+    stint_df, pit_df, warnings = get_strategy_data(laps, picked_drivers)
 
     print("\n" + "=" * 50)
-    print(" TESZT SIKERESEN LEFUTOTT ")
+    print(" STRATÉGIA TESZT SIKERESEN LEFUTOTT ")
     print("=" * 50)
 
-    print("\n--- STATISZTIKAI ADATOK (stats_data) ---")
-    print("Ezt használjuk a kopás mértékének elemzésére (meredekség):")
-    if not stats_data.empty:
-        display_stats = stats_data.copy()
-        display_stats['Slope_steepness'] = display_stats['Slope_steepness'].round(4)
-        print(display_stats.to_string(index=False))
+    print("\n--- GUMI-TÖRTÉNELEM (stint_df) ---")
+    print("Ebből rajzoljuk a Gantt-diagramot (Etapok és gumik):")
+    if not stint_df.empty:
+        # Kiíratjuk az első 15 sort
+        print(stint_df.head(15).to_string(index=False))
     else:
-        print("Nincs elég adat a statisztika kiszámításához.")
+        print("Nincs stint adat.")
 
-    print("\n--- VIZUALIZÁCIÓS ADATOK (plot_data) ---")
-    print("Az első 15 sor a tiszta (outlier-mentes) adatokból a grafikonhoz:")
-    if not plot_data.empty:
-        cols_to_print = ['Driver', 'Compound', 'Stint', 'TyreLife', 'LapTime_in_sec']
-        print(plot_data[cols_to_print].head(15).to_string(index=False))
+    print("\n--- BOXUTCAI IDŐVESZTESÉG (pit_df) ---")
+    print("Ebből rajzoljuk a 0-30 mp-es Pit Stop grafikont:")
+    if not pit_df.empty:
+        # A boxidőt kerekítjük 3 tizedesjegyre, hogy szebben mutasson a konzolon
+        display_pit = pit_df.copy()
+        display_pit['PitOutTime'] = display_pit['PitOutTime'].round(3)
+        print(display_pit.head(15).to_string(index=False))
     else:
-        print("Nincs elég megtisztított adat a vizualizációhoz.")
+        print("Nincs boxutca adat.")
+
+    print("\n--- FIGYELMEZTETÉSEK (warnings) ---")
+    print("Adathiány (DNF vagy Piros Zászló) miatt kihagyott kiállások:")
+    if warnings:
+        for w in warnings:
+            print(f"[!] {w}")
+    else:
+        print("Tökéletes adatsor: Nem volt hiányzó boxadat, minden kiállás mérhető volt!")
 
 
 if __name__ == "__main__":
-    run_degradation_test()
+    run_strategy_test()

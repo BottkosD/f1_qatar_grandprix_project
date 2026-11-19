@@ -13,21 +13,15 @@ def cleaned_laps_data(laps, cols=None):
 
     # Dropping data with not given value (NAT)
     cleaned_laps = laps.dropna(subset=['LapTime']).copy() # .copy() is needed, bc even if I assign the dataframe to a variable the dataframe referenced is still the same, not the copy
-    #test:
-    print(cleaned_laps.head(40))
 
     # Dropping all the lap times considered inaccurate by the FIA
     # For example red flags, pits, (v)sc are considered inaccurate
     cleaned_laps = cleaned_laps[cleaned_laps["IsAccurate"] == True]
     # IsAccurate should remove all the generated data, just making sure that the generated data really is removed
     cleaned_laps = cleaned_laps[cleaned_laps["FastF1Generated"] == False]
-    #test:
-    print(cleaned_laps.head(40))
 
     # converting lap times into seconds and adding it to the dataframe
     cleaned_laps['LapTime_in_sec'] = cleaned_laps['LapTime'].dt.total_seconds()
-    #test:
-    print(cleaned_laps.head(40))
 
     # Checks if the cols argument is given and if so, it adds a new argument to be shown
     # As we have added the laptime_in_sec calculated column, we want to get hold of that data

@@ -49,7 +49,7 @@ def create_pace_data_chart(laps_df):
 ###########################
 # Table rendering
 ###########################
-def render_pace_table(laps_df, stats_with_compound):
+def render_pace_plot(laps_df, stats_with_compound):
     """
      This function is responsible for the rendering as mentioned above, that will use the create_pace_data_chart func and
      it will render also a table with different compounds used by the first three drivers and the time delta to the rest of the field.

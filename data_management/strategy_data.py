@@ -13,6 +13,7 @@ def get_strategy_data(raw_laps, picked_drivers):
 
     # Copying the raw_laps filtered by the picked drivers
     filtered_raw_laps = raw_laps[raw_laps['Driver'].isin(picked_drivers)].copy()
+    filtered_raw_laps = filtered_raw_laps.sort_values(by=['Driver', 'LapNumber'])
 
     # Lists for the two returning data
     stint_history = []
@@ -42,9 +43,10 @@ def get_strategy_data(raw_laps, picked_drivers):
                     pit_time = (pit_out_timestamp - previous_pit_in).total_seconds()
 
                     pit_calculated_data = {
-                        'Driver'    : driver,
-                        'Stint'     : stint_num,
-                        'PitOutTime': pit_time,
+                        'Driver'      : driver,
+                        'Stint'       : stint_num,
+                        'Pit_Time_sec': pit_time,
+                        'Pit_Lap'     : stint_data['LapNumber'].iloc[0],
                     }
 
                     pit_loss.append(pit_calculated_data)
@@ -66,22 +68,26 @@ def get_strategy_data(raw_laps, picked_drivers):
 
             # Getting the extracted data into a dict for better handling
             compound_by_driver = {
-                'Driver'     : driver,
-                'Stint'      : stint_num,
-                'Compound'   : tyre_compound,
-                'Start_Lap'  : compound_start_lap,
-                'Finish_Lap' : compound_finish_lap,
+                'Driver'       : driver,
+                'Stint'        : stint_num,
+                'Compound'     : tyre_compound,
+                'Start_Lap'    : compound_start_lap,
+                'Finish_Lap'   : compound_finish_lap,
+                'Stint_Length' : compound_finish_lap - compound_start_lap + 1,
             }
 
             stint_history.append(compound_by_driver)
 
             # Searching for the pit-in time at the last record of the current stint
             current_pit_in = stint_data['PitInTime'].iloc[-1]
-            if pd.notna(previous_pit_in):
+            if pd.notna(current_pit_in):
                 previous_pit_in = current_pit_in
-
 
     plot_stint_df = pd.DataFrame(stint_history)
     pit_loss_df   = pd.DataFrame(pit_loss)
+
+    if not pit_loss_df.empty:
+        fastest_pit_time                 = pit_loss_df['Pit_Time_sec'].min()
+        pit_loss_df['Delta_to_best_pit'] = pit_loss_df['Pit_Time_sec'] - fastest_pit_time
 
     return plot_stint_df, pit_loss_df, lost_pit_data

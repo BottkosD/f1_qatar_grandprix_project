@@ -44,37 +44,37 @@ def create_degradation_chart(driver_plot_df, driver_stats_df, driver_name):
 
         # Adding the dot cluster to the initialized figure, with the customization
         fig.add_trace(go.Scatter(
-            x          =current_stint_laps['LapNumber'],
-            y          =current_stint_laps['LapTime_in_sec'],
-            mode       ='markers',
-            name       =stint_label,
-            legendgroup=stint_label,
-            marker     =dict(color=color, size=5),
+            x          = current_stint_laps['LapNumber'],
+            y          = current_stint_laps['LapTime_in_sec'],
+            mode       = 'markers',
+            name       = stint_label,
+            legendgroup= stint_label,
+            marker     = dict(color=color, size=5),
         ))
 
         # Reading the regression line's data into variables
         x_min = current_stint_laps['LapNumber'].min()
         x_max = current_stint_laps['LapNumber'].max()
-        y_min = current_stint_laps['TyreLife'].min()
-        y_max = current_stint_laps['TyreLife'].max()
+        y_min = slope * current_stint_laps['TyreLife'].min() + intercept
+        y_max = slope * current_stint_laps['TyreLife'].max() + intercept
 
         # Creating the regression line with the variables
         # showlegend=False -> bc it would cause to display the legends twice, one from the point cluster, one from the regression line
         fig.add_trace(go.Scatter(
-            x          =[x_min, x_max],
-            y          =[y_min, y_max],
-            mode       ='lines',
-            name       =f"{stint_label} trend",
-            legendgroup=stint_label,
-            showlegend =False,
-            line       =dict(color=color, width=2),
+            x           = [x_min, x_max],
+            y           = [y_min, y_max],
+            mode        = 'lines',
+            name        = f"{stint_label} trend",
+            legendgroup = stint_label,
+            showlegend  = False,
+            line        = dict(color=color, width=2),
         ))
 
     fig.update_layout(
-        title       =f"{driver_name} - Tyre Degradation by stint",
-        xaxis_title ="Lap Number",
-        yaxis_title ="Lap Time (sec)",
-        legend_title="Legend"
+        title        = f"{driver_name} - Tyre Degradation by stint",
+        xaxis_title  = "Lap Number",
+        yaxis_title  = "Lap Time (sec)",
+        legend_title = "Legend"
     )
 
     return fig
@@ -117,6 +117,13 @@ def render_degradation_plot(plot_data, stats_data):
     # Table representing the drivers' data under the chart
     st.subheader("Tyre degradation by stint summary table")
     # Rounding the numbers to three decimal place so every data will time data will have the same length
-    st.dataframe(stats_data.round(3), width='stretch', hide_index=True)
+    st.dataframe(stats_data.round(3),
+                 column_config={
+                     'Stint_laps'         : "Tyre life",
+                     'Slope_steepness'    : "Slow-down",
+                     'Interception_point' : "Time",
+                 },
+                 width='stretch',
+                 hide_index=True)
 
     st.divider()

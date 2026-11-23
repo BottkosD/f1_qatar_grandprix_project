@@ -24,13 +24,13 @@ def create_pace_data_chart(laps_df):
     # Defining data for the plot and customization of the plot
     fig = px.line(
         data_frame=laps_plot_df,
-        x         ='LapNumber',
-        y         ='Tdelta_to_Field',
-        color     ='Drivers_Group',
-        markers   =True,
-        hover_data=['Compound', 'LapTime_in_sec'],
-        title     ='Raw Pace Data',
-        labels    ={
+        x         = 'LapNumber',
+        y         = 'Tdelta_to_Field',
+        color     = 'Drivers_Group',
+        markers   = True,
+        hover_data= ['Compound', 'LapTime_in_sec'],
+        title     = 'Raw Pace Data',
+        labels    = {
             'LapNumber'      : "Lap",
             'Tdelta_to_Field': "Time difference to Field (mp)",
             'Drivers_Group'  : "Driver"
@@ -64,11 +64,19 @@ def render_pace_plot(laps_df, stats_with_compound):
     st.plotly_chart(finished_fig, width="stretch")
 
     # Table with driver stats
-    st.subheader("First three drivers time difference on different compounds")
+    st.subheader("First three drivers time difference on different compounds🛞")
 
 
     rounded_compound_stats = round(stats_with_compound, 3).copy()
-    st.dataframe(rounded_compound_stats, width="stretch", hide_index=True)
+    st.dataframe(
+        rounded_compound_stats,
+        column_config={
+            'Drivers_Group'        : "Driver",
+            'Field_Compound_Median': "Field Median On Compound",
+            'Gap_to_Field'         : "Gap to Field"
+        },
+        width="stretch",
+        hide_index=True)
 
     # Visual division of the files -> creates a line from side to side of the page
     st.divider()

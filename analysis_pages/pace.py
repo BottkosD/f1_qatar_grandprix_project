@@ -54,8 +54,8 @@ def render_pace_plot(laps_df, stats_with_compound):
      This function is responsible for the rendering as mentioned above, that will use the create_pace_data_chart func and
      it will render also a table with different compounds used by the first three drivers and the time delta to the rest of the field.
     """
-    st.header("Raw pace data")
-    st.subheader("Performance of the first three drivers on the different compound they used and the difference in time with the Field.")
+    st.header("Raw pace data 🗂️")
+    st.subheader("Performance of the first three drivers on the different compound they used and the difference in time with the Field.📈")
 
     # Saving the generated fig into a variable
     finished_fig = create_pace_data_chart(laps_df)

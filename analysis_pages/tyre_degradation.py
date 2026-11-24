@@ -86,7 +86,7 @@ def render_degradation_plot(plot_data, stats_data):
     """
      This function renders the degradation chart, and the selected drivers will have their own section.
     """
-    st.header("Tyre Degradation")
+    st.header("Tyre Degradation 🛞")
     st.caption("Slowing means the line will have a positive steepness and negative in case if the fuel accelerates the car more than the tyre degradation slows it.")
 
     # In case the selected drivers have not enough data or have no data at all for a stint/stints
@@ -115,7 +115,7 @@ def render_degradation_plot(plot_data, stats_data):
             st.plotly_chart(figure, width='stretch')
 
     # Table representing the drivers' data under the chart
-    st.subheader("Tyre degradation by stint summary table")
+    st.subheader("Tyre degradation by stint summary table 📊")
     # Rounding the numbers to three decimal place so every data will time data will have the same length
     st.dataframe(stats_data.round(3),
                  column_config={

@@ -12,7 +12,7 @@ from data_management.data import load_f1_data
 def cleaned_laps_data(laps, cols=None):
 
     # Dropping data with not given value (NAT)
-    cleaned_laps = laps.dropna(subset=['LapTime']).copy() # .copy() is needed, bc even if I assign the dataframe to a variable the dataframe referenced is still the same, not the copy
+    cleaned_laps = laps.dropna(subset=['LapTime']).copy() # .copy() is needed, bc even if I assign the dataframe to a variable the dataframe referenced is still the same, not a copy
 
     # Dropping all the lap times considered inaccurate by the FIA
     # For example red flags, pits, (v)sc are considered inaccurate

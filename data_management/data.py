@@ -1,15 +1,15 @@
 import os
 import json
-from itertools import count
+import pandas as pd
 
 import fastf1
 from pathlib import Path
 
 # a print statement-eket, ha van idő átírni log fájlba.
 """
- - This file is responsible for loading the f1 data, it loads it into cache if it does not exist yet,
-   otherwise it loads the data from the cached file.
- - It is also responsible for error handling when loading the data.
+ This file is responsible for loading the f1 data, it loads it into cache if it does not exist yet,
+ otherwise it loads the data from the cached file.
+ It is also responsible for error handling when loading the data.
 """
 
 ######################
@@ -68,19 +68,20 @@ def load_f1_data():
                 laps            = session.laps # all the laps (from timing data) is queried
                 data_to_be_used = f1_details['observed_data'] # needed col names loaded into a variable
 
+                # Getting hold of the podium drivers' data
+                podium = session.results.sort_values(by='Position').head(3).reset_index(drop=True)
+                podium_df = pd.DataFrame({
+                    'Position'   : podium['Position'].astype(int),
+                    'Name'       : podium['LastName'],
+                    'Image_path' : f"pictures/drivers/" + podium['Abbreviation'] + ".png",
+                })
+
+
                 print("Session data loaded successfully!")
-                return laps, data_to_be_used
+                return laps, data_to_be_used, podium_df
 
             except Exception as e:
                 print(f"An error occurred while loading the F1 data: {e}")
 
     except FileNotFoundError as e:
         print(f"Error caught: {e}")
-
-
-if __name__ == "__main__":
-    raw_laps, cols = load_f1_data()
-
-    if raw_laps is not None:
-        print("Elérhető adatok:")
-        print(raw_laps[cols].head(20))

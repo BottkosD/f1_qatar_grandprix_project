@@ -5,7 +5,7 @@ import pandas as pd
 import fastf1
 from pathlib import Path
 
-# a print statement-eket, ha van idő átírni log fájlba.
+
 """
  This file is responsible for loading the f1 data, it loads it into cache if it does not exist yet,
  otherwise it loads the data from the cached file.
@@ -85,3 +85,8 @@ def load_f1_data():
 
     except FileNotFoundError as e:
         print(f"Error caught: {e}")
+
+
+
+if __name__ == '__main__':
+    load_config()

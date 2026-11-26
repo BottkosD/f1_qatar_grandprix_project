@@ -18,8 +18,8 @@ from analysis_pages.podium import render_podium
 #########################
 # Page Setup
 #########################
-st.set_page_config(page_title="Formula 1 - Qatar Grandprix", layout="wide")
-st.title("🏎️ F1 Qatar Grandprix Analysis 📊")
+st.set_page_config(page_title="Formula 1 - Qatar Grand Prix", layout="wide")
+st.title("🏎️ F1 Qatar Grand Prix Analysis 📊")
 
 # Reading the first three pilots from the .json file
 with open("data\\f1_race_details.json", "r", encoding="utf-8") as f:
@@ -28,7 +28,7 @@ with open("data\\f1_race_details.json", "r", encoding="utf-8") as f:
 podium_drivers = config["picked_drivers"]
 
 #Loading and cleaning the data and caching it, so it doesn't have to be loaded again every time
-@st.cache_data
+@st.cache_data(show_spinner="Loading F1 race data...")
 def load_and_clean_data():
     raw_laps, observed_cols, podium_df = load_f1_data()
     cleaned_data = cleaned_laps_data(raw_laps, observed_cols)
@@ -43,11 +43,14 @@ render_podium(podium_df)
 st.sidebar.header("Driver Filter:")
 all_drivers = sorted(cleaned_laps["Driver"].unique().tolist())
 
+# Making suer the default selected drivers from the .json file are in the database
+default_drivers = [d for d in podium_drivers if d in all_drivers]
+
 # Limiting the number of drivers to be able to calculate the Field columns
 selected_drivers = st.sidebar.multiselect(
     label          = "Maximum drivers selected: 5",
     options        = all_drivers,
-    default        = podium_drivers,
+    default        = default_drivers,
     max_selections = 5,
 )
 

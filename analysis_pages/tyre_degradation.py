@@ -119,7 +119,7 @@ def render_degradation_plot(plot_data, stats_data):
     # Rounding the numbers to three decimal place so every data will time data will have the same length
     st.dataframe(stats_data.round(3),
                  column_config={
-                     'Stint_laps'         : "Tyre life",
+                     'Stint_laps'         : "Laps in Stint",
                      'Slope_steepness'    : "Slow-down (sec/lap)",
                      'Interception_point' : "Base Lap Time (sec)",
                  },

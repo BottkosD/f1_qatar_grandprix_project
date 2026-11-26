@@ -1,7 +1,3 @@
-import pandas as pd
-from data_management.data import load_f1_data
-
-
 """
  The function is expecting to get raw data as 'laps' and the columns that has been chosen as the base of 
  the analysis.

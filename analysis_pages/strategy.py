@@ -82,7 +82,7 @@ def render_strategy_plot(plot_stint_df, pit_loss_df, lost_pit_data):
         st.dataframe(pit_loss_df.round(3),
                      column_config={
                          'Pit_Time_sec'      : "Pit time (sec)",
-                         'Pit_Lap'           : "Going to pit (Lap)",
+                         'Pit_Lap'           : "Getting out of Pit (Lap)",
                          'Delta_to_best_pit' : "Difference to fastest pit (sec)"
                      },
                      width="stretch",

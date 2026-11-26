@@ -1,5 +1,3 @@
-from pandas import *
-
 """
  This file is responsible for extracting the lap data of the specified drivers and the lap time of the
  whole field, which will draw out the difference between the drivers and the field.
@@ -17,7 +15,7 @@ def calculate_pace(cleaned_laps, picked_drivers, min_cars=5):
     # Check if drivers are within the data
     driver_not_exists = set(picked_drivers) - set(cleaned_laps['Driver'])
     if driver_not_exists:
-        raise ValueError(f"The drivers picked for the computations are not present in the specified json file.")
+        raise ValueError("The drivers picked for the computations are not present in the specified json file.")
 
     # Creating copy of the existing data frame
     laps_df = cleaned_laps.copy()

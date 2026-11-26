@@ -65,7 +65,7 @@ def calculate_degradation(cleaned_laps, picked_drivers):
             x_axis = outlier_check_result['TyreLife']
             y_axis = outlier_check_result['LapTime_in_sec']
 
-            # Getting the important results for the slope's steepness and the interception point (where y=0)
+            # Getting the important results for the slope's steepness and the interception point (where x=0)
             slope, intercept = np.polyfit(x_axis, y_axis, 1)
 
             data_per_stint = {

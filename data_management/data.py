@@ -73,7 +73,7 @@ def load_f1_data():
                 podium_df = pd.DataFrame({
                     'Position'   : podium['Position'].astype(int),
                     'Name'       : podium['LastName'],
-                    'Image_path' : f"pictures/drivers/" + podium['Abbreviation'] + ".png",
+                    'Image_path' : "pictures/drivers/" + podium['Abbreviation'] + ".png",
                 })
 
 
@@ -85,5 +85,3 @@ def load_f1_data():
 
     except FileNotFoundError as e:
         print(f"Error caught: {e}")
-
-load_f1_data()

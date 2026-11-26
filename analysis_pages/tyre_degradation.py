@@ -120,8 +120,8 @@ def render_degradation_plot(plot_data, stats_data):
     st.dataframe(stats_data.round(3),
                  column_config={
                      'Stint_laps'         : "Tyre life",
-                     'Slope_steepness'    : "Slow-down",
-                     'Interception_point' : "Time",
+                     'Slope_steepness'    : "Slow-down (sec/lap)",
+                     'Interception_point' : "Base Lap Time (sec)",
                  },
                  width='stretch',
                  hide_index=True)

@@ -38,7 +38,7 @@ def create_strategy_chart(plot_stint_df):
         title              = "Tyre strategy by driver"
     )
 
-    # Adding a black outline to all the bars -> if two consecutive laps are completed on the same compound they would seem to be one big stint
+    # Adding a black outline to all the bars -> if two consecutive stints are completed on the same compound they would seem to be one big stint
     horizontal_bar_fig.update_traces(marker_line_color='black', marker_line_width=1.5, textposition='inside')
 
     # Adding formatted title, not the column title itself
@@ -83,7 +83,7 @@ def render_strategy_plot(plot_stint_df, pit_loss_df, lost_pit_data):
                      column_config={
                          'Pit_Time_sec'      : "Pit time (sec)",
                          'Pit_Lap'           : "Going to pit (Lap)",
-                         'Delta_to_best_pit' : "Difference to fastest pit (ms)"
+                         'Delta_to_best_pit' : "Difference to fastest pit (sec)"
                      },
                      width="stretch",
                      hide_index=True)

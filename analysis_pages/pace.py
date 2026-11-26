@@ -32,7 +32,7 @@ def create_pace_data_chart(laps_df):
         title     = 'Raw Pace Data',
         labels    = {
             'LapNumber'      : "Lap",
-            'Tdelta_to_Field': "Time difference to Field (mp)",
+            'Tdelta_to_Field': "Time difference to Field (sec)",
             'Drivers_Group'  : "Driver"
         }
     )
@@ -64,7 +64,7 @@ def render_pace_plot(laps_df, stats_with_compound):
     st.plotly_chart(finished_fig, width="stretch")
 
     # Table with driver stats
-    st.subheader("First three drivers time difference on different compounds🛞")
+    st.caption("The selected drivers time difference on different compounds🛞")
 
 
     rounded_compound_stats = round(stats_with_compound, 3).copy()
